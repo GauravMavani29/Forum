@@ -26,25 +26,25 @@ class DatabaseSeeder extends Seeder
             'name' => 'ROLE_USER'
         ]);
 
-        // \App\Models\User::create([
-        //     'name' => 'Test User',
-        //     'email' => 'superadmin@gmail.com',
-        //     'password' => bcrypt('superadmin'),
-        //     'secretword' => 'secretword',
-        //     'email_verified_at' => now(),
-        // ]);
+        \App\Models\User::create([
+            'name' => 'Test User',
+            'email' => 'superadmin@gmail.com',
+            'password' => bcrypt('superadmin'),
+            'secretword' => 'secretword',
+            'email_verified_at' => now(),
+        ]);
 
 
-        // $roles = Role::where('name', 'ROLE_SUPERADMIN')->get();
-        // User::all()->each(function($user) use ($roles) {
-        //     $user->roles()->attach($roles);
-        // });
+        $roles = Role::where('name', 'ROLE_SUPERADMIN')->get();
+        User::all()->each(function($user) use ($roles) {
+            $user->roles()->attach($roles);
+        });
 
-        // \App\Models\User::create([
-        //     'name' => 'Test User',
-        //     'email' => 'user@gmail.com',
-        //     'password' => bcrypt('user'),
-        //     'secretword' => 'secretword',
-        // ]);
+        \App\Models\User::create([
+            'name' => 'Test User',
+            'email' => 'user@gmail.com',
+            'password' => bcrypt('user'),
+            'secretword' => 'secretword',
+        ]);
     }
 }

@@ -6,7 +6,7 @@ use Livewire\Component;
 use App\Models\Thread;
 use App\Models\ThreadReply;
 use Auth;
-class ReactionReply extends Component
+class Reply extends Component
 {
     public Thread $thread;
     public int $count;
@@ -20,17 +20,18 @@ class ReactionReply extends Component
 
     public function like()
     {
-        if ($this->thread->isLiked()) {
-            $this->thread->removeLike();
-            $this->count--;
-        } elseif (auth()->user()) {
-            $this->thread->reactions()->create([
-                'thread_id' => $this->thread->id,
-                'user_id' => auth()->id()
-            ]);
+        $this->thread->toggleReaction('love');
+        // if ($this->thread->isLiked()) {
+        //     $this->thread->removeLike();
+        //     $this->count--;
+        // } elseif (auth()->user()) {
+        //     // $this->thread->reactions()->create([
+        //     //     'thread_id' => $this->thread->id,
+        //     //     'user_id' => auth()->id(),
+        //     // ]);
 
-            $this->count++;
-        }
+        //     $this->count++;
+        // }
     }
 
     
@@ -46,6 +47,6 @@ class ReactionReply extends Component
 
     public function render()
     {
-        return view('livewire.reaction-reply');
+        return view('livewire.reply');
     }
 }

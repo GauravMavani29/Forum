@@ -57,7 +57,7 @@ Route::group(['middleware'=>['auth','role:ROLE_SUPERADMIN'],'prefix'=>'superadmi
 
 
 //USER
- Route::middleware(['auth','role:ROLE_USER','verified'])->group(function () {
+Route::group(['middleware'=>['auth','role:ROLE_USER,ROLE_SUPERADMIN']],function (){
     Route::get('subcategory/{subcategory}',[UserSubCategoryController::class,'subcategory'])->name('subcategory.thread');
     Route::get('subcategory/thread/{subcategory}',[UserThreadController::class,'create'])->name('thread.create');
     Route::post('subcategory/thread/{subcategory}',[UserThreadController::class,'store'])->name('thread.store');

@@ -4,14 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Qirolab\Laravel\Reactions\Traits\Reactable;
+use Qirolab\Laravel\Reactions\Contracts\ReactableInterface;
 
-class Thread extends Model
+class Thread extends Model implements ReactableInterface
 {
-    use HasFactory;
-
-    protected $withCount = [
-        'reactions',
-    ];
+    use HasFactory, Reactable;
 
     public function user(){
         return $this->belongsTo(User::class);
@@ -19,26 +17,5 @@ class Thread extends Model
 
     public function replies(){
         return $this->hasMany(ThreadReply::class);
-    }
-
-    public function reactions()
-    {
-        return $this->hasMany(ThreadReaction::class);
-    }
-
-    public function isLiked()
-    {
-        if (auth()->user()) {
-            return auth()->user()->reactions()->forThread($this)->count();
-        }
-        return false;
-    }
-
-    public function removeLike()
-    {
-        if (auth()->user()) {
-            return auth()->user()->reactions()->forThread($this)->delete();
-        }
-        return false;
     }
 }

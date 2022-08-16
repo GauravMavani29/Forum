@@ -14,9 +14,9 @@ class CheckRole
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle(Request $request, Closure $next, string $role)
+    public function handle(Request $request, Closure $next, ...$role)
     {
-        if (! $request->user()->hasRole($role)) {
+        if (! $request->user()->authorizeRoles($role)) {
             abort(401, 'This action is unauthorized.');
         }
         return $next($request);

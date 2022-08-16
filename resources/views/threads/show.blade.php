@@ -13,7 +13,7 @@
     </style>
 @endsection
 @section('content')
-    <livewire:reaction-reply :thread="$thread" />
+    <livewire:reply :thread="$thread" />
 @endsection
 @section('scripts')
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"

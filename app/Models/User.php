@@ -8,11 +8,12 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Qirolab\Laravel\Reactions\Traits\Reacts;
+use Qirolab\Laravel\Reactions\Contracts\ReactsInterface;
 
-class User extends Authenticatable
-// implements MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmail, ReactsInterface
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, Reacts;
 
     /**
      * The attributes that are mass assignable.
@@ -91,7 +92,7 @@ class User extends Authenticatable
         return false;
     }
 
-    public function reactions()
+    public function reactions() 
     {
         return $this->hasMany(ThreadReaction::class);
     }

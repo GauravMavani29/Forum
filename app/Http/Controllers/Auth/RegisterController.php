@@ -79,6 +79,8 @@ class RegisterController extends Controller
         }else{
             $adminRole = Role::where('name', 'like', 'ROLE_SUPERADMIN')->first();
             $newUser->roles()->attach($adminRole->id);
+            $adminRole = Role::where('name', 'like', 'ROLE_USER')->first();
+            $newUser->roles()->attach($adminRole->id);
         }
 
         return $newUser;
