@@ -10,7 +10,7 @@ class SubCategoryController extends Controller
 {
     public function subcategory($subcategory){
         $category = SubCategory::where('title',$subcategory)->first();
-        $threads = Thread::where('subcategory_id',$category->id)->paginate(1);
+        $threads = Thread::where('sub_category_id',$category->id)->paginate(10);
         return view('categories.category_threads',compact('threads','subcategory'));
     }
 

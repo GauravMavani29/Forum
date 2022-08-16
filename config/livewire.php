@@ -68,7 +68,7 @@ return [
     |
     */
 
-    'app_url' => 'http://localhost/forum/forum',
+    'app_url' => 'http://localhost/forum/forum/public',
 
     /*
     |--------------------------------------------------------------------------

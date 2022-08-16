@@ -21,7 +21,7 @@ class ThreadController extends Controller
         $thread->title = $request->title;
         $thread->slug = preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $request->title)).'-'.Str::random(5);
         $thread->description = $request->description;
-        $thread->subcategory_id = $category->id;
+        $thread->sub_category_id = $category->id;
         $thread->user_id = Auth::user()->id;
         $thread->save();
         return redirect()->route('subcategory.thread',$request->subcategory);

@@ -3,7 +3,7 @@
     <link href="{{ asset('css/threads.css') }}" rel="stylesheet">
 @endsection
 @section('content')
-    <div class="container-fluid mt-100">
+    <div class="container-fluid">
         <div class="d-flex flex-wrap justify-content-between">
             <div>
                 <a href="{{ route('thread.create', $subcategory) }}"type="button" class="btn btn-shadow btn-wide btn-primary">
@@ -31,29 +31,38 @@
             </div>
             <div class="card-body py-3">
                 @foreach ($threads as $item)
-                    <div class="row no-gutters align-items-center">
-                        <div class="col">
-                            <a href="{{ route('thread.show',$item->slug) }}" class="text-big" data-abc="true">{{ $item->title }}</a>
-                            <div class="text-muted small mt-1">{!! date('d-M-y', strtotime($item->created_at)) !!} &nbsp;&middot;&nbsp; <a
-                                    href="javascript:void(0)" class="text-muted" data-abc="true">{{ $item->user->name }}</a>
-                            </div>
+                    @if ($item->is_blocked == 1)
+                        <div class="row no-gutters align-items-center" style="background: #ff0000; color: #ffffff;">
+                            <p class="text-dark m-0">Blocked Reason: </p><br/>
+                            <p>{{ $item->blocked_message }}</p>
                         </div>
-                        <div class="d-none d-md-block col-4">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col-4">{{ count($item->replies) }}</div>
-                                <div class="media col-8 align-items-center">
-                                    <img src="https://res.cloudinary.com/dxfq3iotg/image/upload/v1574583246/AAA/2.jpg"
-                                        alt="" class="d-block ui-w-30 rounded-circle">
-                                    <div class="media-body flex-truncate ml-2">
-                                        <div class="line-height-1 text-truncate">1 day ago</div>
-                                        <a href="javascript:void(0)" class="text-muted small text-truncate"
-                                            data-abc="true">by
-                                            Tim cook</a>
+                    @else
+                        <div class="row no-gutters align-items-center mt-1">
+                            <div class="col">
+                                <a href="{{ route('thread.show', $item->slug) }}" class="text-big"
+                                    data-abc="true">{{ $item->title }}</a>
+                                <div class="text-muted small mt-1">{!! date('d-M-y', strtotime($item->created_at)) !!} &nbsp;&middot;&nbsp; <a
+                                        href="javascript:void(0)" class="text-muted"
+                                        data-abc="true">{{ $item->user->name }}</a>
+                                </div>
+                            </div>
+                            <div class="d-none d-md-block col-4">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col-4">{{ count($item->replies) }}</div>
+                                    <div class="media col-8 align-items-center">
+                                        <img src="https://res.cloudinary.com/dxfq3iotg/image/upload/v1574583246/AAA/2.jpg"
+                                            alt="" class="d-block ui-w-30 rounded-circle">
+                                        <div class="media-body flex-truncate ml-2">
+                                            <div class="line-height-1 text-truncate">1 day ago</div>
+                                            <a href="javascript:void(0)" class="text-muted small text-truncate"
+                                                data-abc="true">by
+                                                Tim cook</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    @endif
                 @endforeach
             </div>
             <hr class="m-0">
@@ -62,7 +71,4 @@
             {{ $threads->links('pagination::bootstrap-4') }}
         </nav>
     </div>
-
-
-
 @endsection

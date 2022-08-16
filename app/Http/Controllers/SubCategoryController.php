@@ -20,7 +20,7 @@ class SubCategoryController extends Controller
     public function index()
     {
         $subcategories = SubCategory::all();
-        return view('admin.subcategories.index', compact('subcategories'));
+        return view('superadmin.subcategories.index', compact('subcategories'));
     }
 
     /**
@@ -31,7 +31,7 @@ class SubCategoryController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view('admin.subcategories.create', compact('categories'));
+        return view('superadmin.subcategories.create', compact('categories'));
     }
 
     /**
@@ -83,7 +83,7 @@ class SubCategoryController extends Controller
     {
         $subcategory = SubCategory::find($id);
         $categories = Category::all();
-        return view('admin.subcategories.edit', compact('subcategory', 'categories'));
+        return view('superadmin.subcategories.edit', compact('subcategory', 'categories'));
     }
 
     /**
@@ -106,7 +106,7 @@ class SubCategoryController extends Controller
             $file = $request->file('image');
             $file_name = time() . '.' . $file->getClientOriginalExtension();
             $file->storeAs('/public/subcategories', $file_name);
-            $category->image = $file_name;
+            $subcategory->image = $file_name;
         }
         $subcategory->title = $request->title;
         $subcategory->category_id = $request->category;
