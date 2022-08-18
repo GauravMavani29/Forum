@@ -91,9 +91,4 @@ class User extends Authenticatable implements MustVerifyEmail, ReactsInterface
         }
         return false;
     }
-
-    public function reactions() 
-    {
-        return $this->hasMany(ThreadReaction::class);
-    }
 };

@@ -6,16 +6,16 @@
     <div class="container-fluid">
         <div class="d-flex flex-wrap justify-content-between">
             <div>
-                <a href="{{ route('thread.create', $subcategory) }}"type="button" class="btn btn-shadow btn-wide btn-primary">
+                <a href="{{ route('thread.create', $subcategory) }}"type="button" class="btn btn-shadow btn-wide btn-primary my-2">
                     <span class="btn-icon-wrapper pr-2 opacity-7">
                         <i class="fa fa-plus fa-w-20"></i>
                     </span>
                     New thread
                 </a>
             </div>
-            <div class="col-12 col-md-3 p-0 mb-3">
+            {{-- <div class="col-12 col-md-3 p-0 mb-3">
                 <input type="text" class="form-control" placeholder="Search...">
-            </div>
+            </div> --}}
         </div>
         <div class="card mb-3">
             <div class="card-header pl-0 pr-0">

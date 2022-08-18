@@ -57,7 +57,7 @@
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">Joined: {!! date('d-M-y', strtotime($thread->user->created_at)) !!}</li>
                     <li class="list-group-item">Messages: 0</li>
-                    {{-- <li class="list-group-item">Reactions: {{ count($thread->reactions) }}</li> --}}
+                    <li class="list-group-item">Reactions: {{ $thread->user->reactions }}</li>
                     <li class="list-group-item">Vestibulum at eros</li>
                 </ul>
             </div>
@@ -75,7 +75,7 @@
                 <div class="reaction-parent">
                     <i onclick="showReactions(this)"
                         class="@if ($thread->isLiked()) bi bi-{{ $thread->reacted()?->type }}@else bi bi-hand-thumbs-up @endif"
-                        style="font-size: 1.2rem; cursor: pointer;" id="reaction" wire:ignore></i>
+                        style="font-size: 1.2rem; cursor: pointer;" id="reaction"></i>
                     <a href="#ckreply"
                         onclick="ckreply({{ json_encode($thread->description, 1) }},{{ json_encode($thread->user->name, 1) }})"
                         style="color: #000;">
@@ -83,65 +83,18 @@
                     </a>
                 </div>
                 <div class="reaction-child" style="display:none;">
-                    <i onclick="threadReact('hand-thumbs-up-fill',this)" class="bi bi-hand-thumbs-up-fill"></i>
-                    <i onclick="threadReact('hand-thumbs-down-fill',this)" class="bi bi-hand-thumbs-down-fill"></i>
-                    <i onclick="threadReact('emoji-heart-eyes-fill',this)" class="bi bi-emoji-heart-eyes-fill"></i>
-                    <i onclick="threadReact('emoji-frown-fill',this)" class="bi bi-emoji-frown-fill"></i>
-                    <i onclick="threadReact('heart-fill',this)" class="bi bi-heart-fill"></i>
+                    <i wire:click="react('hand-thumbs-up-fill')" class="bi bi-hand-thumbs-up-fill"></i>
+                    <i wire:click="react('hand-thumbs-down-fill')" class="bi bi-hand-thumbs-down-fill"></i>
+                    <i wire:click="react('emoji-heart-eyes-fill')" class="bi bi-emoji-heart-eyes-fill"></i>
+                    <i wire:click="react('emoji-frown-fill')" class="bi bi-emoji-frown-fill"></i>
+                    <i wire:click="react('heart-fill')" class="bi bi-heart-fill"></i>
                 </div>
             </div>
         </div>
     </div>
     @if (count($thread->replies) > 0)
         @foreach ($thread->replies as $reply)
-            <div class="row no-gutters border m-1 p-2  parent-social">
-                <div class="col-12 col-md-2 col-sm-12">
-                    <div class="card d-flex justify-content-center align-items-center" style="width: 100%;">
-                        <img src="{{ asset('/uploads/avatar/defaultavatar.webp') }}" class="" alt="..."
-                            height="auto" width="75px">
-                        <div class="card-body">
-                            <h5 class="card-title text-center">{{ $reply->user->name }}</h5>
-                        </div>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">Joined: {!! date('d-M-y', strtotime($reply->user->created_at)) !!}</li>
-                            <li class="list-group-item">Messages: 0</li>
-                            {{-- <li class="list-group-item">Reactions: {{ count($thread->reactions) }}</li> --}}
-                            <li class="list-group-item">Vestibulum at eros</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-12 col-sm-6 col-md-10 col-sm-12" style="overflow: hidden;">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ $reply->title }}</h5>
-                    </div>
-                    <hr class="m-1">
-                    <div style="overflow-y: scroll; height: 300px; width: 100%; overflow-x: hidden">
-                        {!! $reply->description !!}
-                    </div>
-
-                    <div class="child-social">
-                        <div class="reaction-parent">
-                            <i onclick="showReactions(this)"
-                                class="@if ($thread->isLiked()) bi bi-{{ $thread->reacted()?->type }}@else bi bi-hand-thumbs-up @endif"
-                                style="font-size: 1.2rem; cursor: pointer;" wire:ignore></i>
-                            <a href="#ckreply"
-                                onclick="ckreply({{ json_encode($thread->description, 1) }},{{ json_encode($thread->user->name, 1) }})"
-                                style="color: #000;">
-                                <i class="bi bi-reply" style="font-size: 1.2rem;"></i>
-                            </a>
-                        </div>
-                        <div class="reaction-child" style="display:none;">
-                            <i onclick="replyReact('hand-thumbs-up-fill',this,{{ $reply->id }})" class="bi bi-hand-thumbs-up-fill"></i>
-                            <i onclick="replyReact('hand-thumbs-down-fill',this,{{ $reply->id }})"
-                                class="bi bi-hand-thumbs-down-fill"></i>
-                            <i onclick="replyReact('emoji-heart-eyes-fill',this,{{ $reply->id }})"
-                                class="bi bi-emoji-heart-eyes-fill"></i>
-                            <i onclick="replyReact('emoji-frown-fill',this),{{ $reply->id }}" class="bi bi-emoji-frown-fill"></i>
-                            <i onclick="replyReact('heart-fill',this,{{ $reply->id }})" class="bi bi-heart-fill"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <livewire:thread-reply :reply="$reply"  :key="time() . rand(0, 999)"/>
         @endforeach
     @else
     @endif
@@ -189,6 +142,11 @@
             ckdata = "";
         });
 
+        window.addEventListener('replyreaction', function() {
+            window.livewire.emit('update-thread');
+            
+        });
+
         function ckreply(description, username) {
             console.log(username)
 
@@ -206,26 +164,6 @@
                 ele.parentNode.nextElementSibling.style.display = "none";
             }
             // $('.reaction-child').toggle();
-        }
-
-
-
-        function threadReact(reaction, elem) {
-            window.livewire.emit('thread-React', {
-                reaction: reaction
-            });
-            elem.parentNode.parentNode.firstElementChild.firstElementChild.className = 'bi bi-' + reaction;
-            elem.parentNode.style.display = "none";
-        }
-
-
-        function replyReact(reaction, elem, reply) {
-            window.livewire.emit('reply-React', {
-                reaction: reaction,
-                replyid: reply
-            });
-            elem.parentNode.parentNode.firstElementChild.firstElementChild.className = 'bi bi-' + reaction;
-            elem.parentNode.style.display = "none";
         }
 
     </script>

@@ -18,7 +18,7 @@ class ThreadReply extends Model implements ReactableInterface
     public function isLiked()
     {
         if (auth()->user()) {
-            return $this->is_reacted;
+            return $this->isReactBy(auth()->user());
         }
         return false;
     }

@@ -42,17 +42,10 @@ class CategoryController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required',
-            'image' => 'required',
-            'description' => 'required',
         ]);
 
-        $file = $request->file('image');
-        $file_name = time() . '.' . $file->getClientOriginalExtension();
-        $file->storeAs('/public/categories', $file_name);
         $category = new Category();
         $category->title = $request->title;
-        $category->image = $file_name;
-        $category->description = $request->description;
         $category->save();
         return redirect()->route('categories.index')->with('success', 'Category created successfully');
     }
@@ -91,18 +84,10 @@ class CategoryController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required',
-            'description' => 'required',
         ]);
 
         $category = Category::find($id);
-        if($request->has('image')){
-            $file = $request->file('image');
-            $file_name = time() . '.' . $file->getClientOriginalExtension();
-            $file->storeAs('/public/categories', $file_name);
-            $category->image = $file_name;
-        }
         $category->title = $request->title;
-        $category->description = $request->description;
         $category->save();
         return redirect()->route('categories.index')->with('success', 'Category updated successfully');
     }

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <livewire:reply :thread="$thread" />
+    <livewire:thread-display :thread="$thread" />
 @endsection
 @section('scripts')
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
