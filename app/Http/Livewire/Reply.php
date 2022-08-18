@@ -9,28 +9,37 @@ use Auth;
 class Reply extends Component
 {
     public Thread $thread;
-    public int $count;
+    public ThreadReply $threadreply;
     public $description;
+
+    protected $listeners = ['thread-React' => 'react','reply-React' => 'replyreact'];
+
 
     public function mount(Thread $thread)
     {
         $this->thread = $thread;
-        $this->count = $thread->reactions_count??0;
     }
 
-    public function like()
+    public function react($payload)
     {
-        $this->thread->toggleReaction('love');
+        // $this->thread->toggleReaction('love');
+        $this->thread->toggleReaction($payload['reaction']);
+        // dd($this->thread->reacted());
         // if ($this->thread->isLiked()) {
-        //     $this->thread->removeLike();
-        //     $this->count--;
-        // } elseif (auth()->user()) {
-        //     // $this->thread->reactions()->create([
-        //     //     'thread_id' => $this->thread->id,
-        //     //     'user_id' => auth()->id(),
-        //     // ]);
-
-        //     $this->count++;
+        // } else{
+        //     $this->thread->toggleReaction($reaction);
+        // }
+    }  
+    
+    public function replyreact($payload)
+    {
+        // $this->thread->toggleReaction('love');
+        $this->threadreply = ThreadReply::find((int)$payload['replyid']);
+        $this->threadreply->toggleReaction($payload['reaction']);
+        // dd($this->thread->reacted());
+        // if ($this->thread->isLiked()) {
+        // } else{
+        //     $this->thread->toggleReaction($reaction);
         // }
     }
 
@@ -49,4 +58,6 @@ class Reply extends Component
     {
         return view('livewire.reply');
     }
+
+    
 }

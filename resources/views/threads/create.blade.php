@@ -16,7 +16,7 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <label> Title </label>
-                                <input type="text" class="form-control" name="title" placeholder="Enter the Title">
+                                <input type="text" class="form-control" name="title" placeholder="Enter the Title" required>
                             </div>
                             <div class="form-group" >
                                 <label> Description </label>

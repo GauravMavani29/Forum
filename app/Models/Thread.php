@@ -10,12 +10,27 @@ use Qirolab\Laravel\Reactions\Contracts\ReactableInterface;
 class Thread extends Model implements ReactableInterface
 {
     use HasFactory, Reactable;
-
     public function user(){
         return $this->belongsTo(User::class);
     }
 
     public function replies(){
         return $this->hasMany(ThreadReply::class);
+    }
+
+    public function isLiked()
+    {
+        if (auth()->user()) {
+            return $this->is_reacted;
+        }
+        return false;
+    }
+
+    public function removeLike()
+    {
+        if (auth()->user()) {
+            return $this->removeReaction(); 
+        }
+        return false;
     }
 }

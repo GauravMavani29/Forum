@@ -1,17 +1,4 @@
 @extends('layouts.app')
-@section('stylesheets')
-    <style>
-        .parent-social {
-            position: relative;
-        }
-
-        .child-social {
-            position: absolute;
-            bottom: 0;
-            right: 0;
-        }
-    </style>
-@endsection
 @section('content')
     <livewire:reply :thread="$thread" />
 @endsection
